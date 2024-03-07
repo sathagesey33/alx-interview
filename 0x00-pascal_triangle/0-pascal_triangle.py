@@ -13,6 +13,7 @@ def pascal_triangle(n):
 
     return triangle
 
+
 # Test your function
 n = 5
 triangle = pascal_triangle(n)
