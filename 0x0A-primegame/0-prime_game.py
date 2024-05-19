@@ -1,61 +1,30 @@
 #!/usr/bin/python3
-""" Prime Game """
-
-
-def isprime(n):
-    """ Return prime number """
-    for i in range(2, n):
-        if n % i == 0:
-            return False
-    return True
-
-
-def delete_numbers(n, nums):
-    """ Remove numbers - return zero """
-    for i in range(len(nums)):
-        if nums[i] % n == 0:
-            nums[i] = 0
+"""Prime Game."""
 
 
 def isWinner(x, nums):
-    """ Return name of player that won
-    most rounds
-    """
-    nums.sort()
-    winner = False
-    Maria = 0
-    Ben = 0
-    for game in range(x):
-        # prints("game# ", game+1)
-        nums2 = list(range(1, nums[game] + 1))
-        # print("nums: ", nums2)
-        turn = 0
-        while True:
-            """
-            # monitor turns, uncomment to watch
-            if turn % 2 != 0:
-                print("Ben turn ")
-            else:
-                print("Maria turn ")
-            """
-            change = False
-            for i, n in enumerate(nums2):
-                # print("n: ", n, "i: ", i)
-                if n > 1 and isprime(n):
-                    delete_numbers(n, nums2)
-                    change = True
-                    turn += 1
-                    break
-            # print("movement: ". nums2)
-            if change is False:
-                break
-        if turn % 2 != 0:
-            Maria += 1
-        else:
-            Ben += 1
-        # print("Maria: {}, Ben: {}".format(Maria, Ben))
-    if Maria == Ben:
+    """function that checks for the winner"""
+    if not nums or x < 1:
         return None
-    if Maria > Ben:
+    max_num = max(nums)
+
+    filter = [True for _ in range(max(max_num + 1, 2))]
+    for i in range(2, int(pow(max_num, 0.5)) + 1):
+        if not filter[i]:
+            continue
+        for j in range(i * i, max_num + 1, i):
+            filter[j] = False
+    filter[0] = filter[1] = False
+    y = 0
+    for i in range(len(filter)):
+        if filter[i]:
+            y += 1
+        filter[i] = y
+    player1 = 0
+    for x in nums:
+        player1 += filter[x] % 2 == 1
+    if player1 * 2 == len(nums):
+        return None
+    if player1 * 2 > len(nums):
         return "Maria"
     return "Ben"
